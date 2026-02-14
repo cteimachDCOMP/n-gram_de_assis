@@ -1,13 +1,15 @@
 import re
+import random
 
-txt = "Olha, Bentinho! Que olhos de cigana oblíqua e dissimulada."
+with open('obra.txt', 'r', encoding='utf-8') as arquivo:
+    texto_do_arquivo = arquivo.read()
 
 def limpeza_texto(texto_bruto):
 
     texto = texto_bruto
     texto = texto.lower()
 
-    texto = re.sub(r'[.!?,]', '', texto)
+    texto = re.sub(r'[.!?,\n-]', '', texto)
 
     texto = texto.split()
 
@@ -61,8 +63,51 @@ def treinar_modelo(token, n):
 
     return context_totals, counts
 
+
+def calcular_probabilidade(context_totals, counts, historico, palavra):
+
+    if historico not in context_totals:
+        return 0
+
+
+    numerador = counts[historico][palavra]
+    denominador = context_totals[historico]
+
+
+
+    p = (numerador/denominador)
+
+    return p
+
         
+def gerar_texto(counts, historico_atual, tamanho):
+
+
+    texto_gerado = []
+
+    for i in range(tamanho):
+
+        if historico_atual not in counts:
+            break
+
+        candidatos = list(counts[historico_atual].keys())
+        pesos = list(counts[historico_atual].values())
+
+        proxima_palavra = random.choices(candidatos, weights=pesos)[0]
+
+        texto_gerado.append(proxima_palavra)
+
+        historico_atual = historico_atual[1:] + (proxima_palavra,)
+
+    return texto_gerado
 
 
 
-print(treinar_modelo(add_pading(limpeza_texto(txt), 3), 3))
+
+tokens = add_pading(limpeza_texto(texto_do_arquivo), 3)
+
+meu_context_totals, meu_counts = treinar_modelo(tokens, 3)
+
+texto_produzido = gerar_texto(meu_counts, ('<s>', '<s>'), 1000)
+
+print("Texto gerado:", " ".join(texto_produzido))
