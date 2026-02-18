@@ -1,42 +1,40 @@
-from PyPDF2 import PdfReader
+import os
 
-meus_livros = ['romances/casaVelha.pdf', 
-               'romances/domCasmurro.pdf', 
-               'romances/esau.pdf', 
-               'romances/helena.pdf', 
-               'romances/iaia.pdf', 
-               'romances/maoLuva.pdf', 
-               'romances/memorial-de-aires.pdf', 
-               'romances/memoriasBras.pdf', 
-               'romances/quincas.pdf',
-               'romances/ressurreicao.pdf']
+meus_livros = [
+    'romances_project_gutemberg/domcasmurro.txt',
+    'romances_project_gutemberg/esaujaco.txt',
+    'romances_project_gutemberg/helena.txt',
+    'romances_project_gutemberg/iaia.txt',
+    'romances_project_gutemberg/maoluva.txt',
+    'romances_project_gutemberg/memorialayres.txt',
+    'romances_project_gutemberg/memoriaspostumas.txt',
+    'romances_project_gutemberg/quincasborba.txt'
+]
 
 corpus_total = ""
 
+print("Iniciando a unificação dos livros...")
+
 for livro in meus_livros:
 
-    with open(livro, 'rb') as arquivo:
-        leitor_pdf = PdfReader(arquivo)
+    try:
 
-        texto_completo = ""
+        with open(livro, 'r', encoding='utf-8') as arquivo:
 
-        for pagina in leitor_pdf.pages:
-            texto_da_pagina = pagina.extract_text()
+            texto = arquivo.read()
 
-            texto_completo += texto_da_pagina
+            corpus_total += texto
+            corpus_total += "\n\n\n"
 
+            print(f"Livro '{livro}' adicionado com sucesso!")
 
-        posicao_inicio = texto_completo.find("CAPÍTULO")
-
-        if posicao_inicio != -1:
-            
-            texto_completo = texto_completo[posicao_inicio:]
-        else:
-            pass
+    except FileNotFoundError:
+        print(f"O arquivo '{livro}' não foi encontrado na pasta.")
 
 
-        corpus_total += texto_completo
+with open('obra.txt', 'w', encoding='utf-8') as arquivo_final:
+    arquivo_final.write(corpus_total)
 
 
-with open('obra.txt', 'w', encoding='utf-8') as arquivo:
-    arquivo.write(corpus_total)
+
+print(f"\nO arquivo 'obra.txt' foi criado")

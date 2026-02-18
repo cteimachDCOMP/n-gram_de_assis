@@ -6,14 +6,14 @@ with open('obra.txt', 'r', encoding='utf-8') as arquivo:
 
 def limpeza_texto(texto_bruto):
 
-    texto = texto_bruto
-    texto = texto.lower()
+    texto = texto_bruto.lower()
+    texto = re.sub(r'[\n\t]', ' ', texto)
+    texto = texto.replace('--', ' ')
+    texto = re.sub(r'_', '', texto)
+    texto = re.sub(r'[.!?,;:"\'()\[\]\-]', ' ', texto)
+    tokens= texto.split()
 
-    texto = re.sub(r'[.!?,\n-]', '', texto)
-
-    texto = texto.split()
-
-    return texto
+    return tokens
 
 
 
@@ -104,10 +104,10 @@ def gerar_texto(counts, historico_atual, tamanho):
 
 
 
-tokens = add_pading(limpeza_texto(texto_do_arquivo), 3)
+tokens = add_pading(limpeza_texto(texto_do_arquivo), 4)
 
-meu_context_totals, meu_counts = treinar_modelo(tokens, 3)
+meu_context_totals, meu_counts = treinar_modelo(tokens, 4)
 
-texto_produzido = gerar_texto(meu_counts, ('<s>', '<s>'), 1000)
+texto_produzido = gerar_texto(meu_counts, ('<s>', '<s>','<s>'), 1000)
 
 print("Texto gerado:", " ".join(texto_produzido))
