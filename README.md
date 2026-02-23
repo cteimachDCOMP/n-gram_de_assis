@@ -26,8 +26,7 @@ O tamanho da "janela" de contexto afeta diretamente o resultado:
 
 * **Valores Baixos (Sub-ajuste / Underfitting):** O modelo torna-se extremamente criativo, mas perde a coerência gramatical e o sentido lógico muito rapidamente, resultando em textos caóticos.
 * **Valores Altos (Sobre-ajuste / Overfitting):** O modelo "decora" os dados de treino. Como o contexto exigido é muito longo e específico, ele perde o poder de escolha e limita-se a copiar trechos idênticos aos livros originais (plágio), perdendo a originalidade.
-* **O Ponto Ideal (Generalização):** Encontra-se num valor intermediário onde o modelo aprende a estrutura gramatical do autor, ganhando a capacidade de **intertextualidade** — conseguindo misturar elementos de livros diferentes numa mesma frase perfeitamente estruturada.
-
+* **O Ponto Ideal (Generalização):** Encontra-se num valor intermediário onde o modelo aprende a estrutura gramatical do autor.
 ## 📂 Estrutura dos Arquivos e Pastas
 
 ### Bases de Dados
