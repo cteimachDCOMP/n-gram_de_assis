@@ -22,7 +22,7 @@ O modelo foi treinado com um corpus composto por 8 obras clássicas extraídas d
 * **Interface Web com Streamlit:** Uma interface amigável onde o usuário pode testar diferentes valores do N-Grama e definir o tamanho do texto gerado.
 
 ## 🧠 O Dilema do N (Overfitting vs. Underfitting)
-Um dos principais estudos deste projeto foi encontrar o "Sweet Spot" (ponto de equilíbrio) para o tamanho do N-Grama. O tamanho da "janela" de contexto afeta diretamente o resultado:
+O tamanho da "janela" de contexto afeta diretamente o resultado:
 
 * **Valores Baixos (Sub-ajuste / Underfitting):** O modelo torna-se extremamente criativo, mas perde a coerência gramatical e o sentido lógico muito rapidamente, resultando em textos caóticos.
 * **Valores Altos (Sobre-ajuste / Overfitting):** O modelo "decora" os dados de treino. Como o contexto exigido é muito longo e específico, ele perde o poder de escolha e limita-se a copiar trechos idênticos aos livros originais (plágio), perdendo a originalidade.
