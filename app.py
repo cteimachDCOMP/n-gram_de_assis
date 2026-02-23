@@ -38,7 +38,17 @@ def treinar_modelo(tokens, n):
 
     return context_totals, counts
 
-def gerar_texto(counts, historico_inicial, tamanho):
+def calcular_probabilidade(context_totals, counts, historico, palavra):
+    if historico not in context_totals:
+        return 0
+
+    numerador = counts[historico][palavra]
+    denominador = context_totals[historico]
+
+    p = (numerador / denominador)
+    return p
+
+def gerar_texto(context_totals, counts, historico_inicial, tamanho):
     texto_gerado = []
     historico_atual = historico_inicial
 
@@ -46,7 +56,7 @@ def gerar_texto(counts, historico_inicial, tamanho):
         if historico_atual not in counts:
             break
 
-        melhores = sorted(counts[historico_atual].items(), key= lambda x: x[1], reverse=True)
+        melhores = sorted(counts[historico_atual].items(), key=lambda x: x[1], reverse=True)
         melhores = melhores[:4]
 
         candidatos = list()
@@ -54,11 +64,11 @@ def gerar_texto(counts, historico_inicial, tamanho):
 
         for tupla in melhores:
              candidatos.append(tupla[0])
-
         
         for tupla in melhores:
-             pesos.append(tupla[1])
-
+             palavra = tupla[0]
+             prob = calcular_probabilidade(context_totals, counts, historico_atual, palavra)
+             pesos.append(prob)
 
         proxima_palavra = random.choices(candidatos, weights=pesos)[0]
 
@@ -66,10 +76,6 @@ def gerar_texto(counts, historico_inicial, tamanho):
         historico_atual = historico_atual[1:] + (proxima_palavra,)
 
     return texto_gerado
-
-
-
-# Interface Gráfica
 
 st.title("Gerador de Textos - Machado de Assis")
 st.markdown("Esta aplicação utiliza **N-Gramas** para gerar textos baseados no estilo de Machado de Assis.")
@@ -91,34 +97,27 @@ tamanho_texto = st.sidebar.slider(
     value=200
 )
 
-
 st.write("### O que o modelo vai escrever hoje?")
 
-
-if st.button("🖊️ Escrever Fanfic"):
-    
+if st.button("🖊️ Escrever História"):
     
     with st.spinner('A ler os livros e a treinar o modelo...'):
-        
-        
         try:
             with open('obra.txt', 'r', encoding='utf-8') as arquivo:
                 texto_do_arquivo = arquivo.read()
             
             tokens = limpeza_texto(texto_do_arquivo)
             
-            
             tokens_pad = add_pading(tokens, n_escolhido)
             context_totals, counts = treinar_modelo(tokens_pad, n_escolhido)
             
+            todos_os_historicos = list(counts.keys())
+            historico_inicial = random.choice(todos_os_historicos)
             
+            texto_gerado = gerar_texto(context_totals, counts, historico_inicial, tamanho_texto)
             
-            historico_inicial = tuple(['<s>'] * (n_escolhido - 1))
-            
-            texto_gerado = gerar_texto(counts, historico_inicial, tamanho_texto)
-            
-            
-            resultado_final = " ".join(texto_gerado)
+            resultado_final = " ".join(historico_inicial) + " " + " ".join(texto_gerado)
+            resultado_final = resultado_final.replace('<s>', '').strip()
             
             st.success("Texto gerado com sucesso!")
             st.markdown(f"> *{resultado_final}*")
