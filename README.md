@@ -68,5 +68,11 @@ Se preferir testar a geração de texto base diretamente no terminal (sem as imp
 python3 codigo_fonte.py
 ```
 
-***
-*Desenvolvido como projeto acadêmico para a disciplina de Inteligência Artificial.*
+## 🤖 Uso de Inteligência Artificial no Desenvolvimento
+
+A construção deste projeto contou com o suporte de Inteligência Artificial como uma ferramenta de auxílio à programação, garantindo um processo de desenvolvimento mais ágil e focado no aprendizado:
+
+* **Aprendizado Guiado:** O modelo **Gemini Pro** foi utilizado no modo de aprendizado guiado para tirar dúvidas e auxiliar na estruturação da lógica do `codigo_fonte.py`, nas implementações feitas no `app.py` e nas estratégias de pré-processamento do `preparar_corpus.py`.
+* **Geração de Código e Documentação:** A IA foi utilizada de maneira mais ostensiva na construção e no design da interface gráfica com o framework Streamlit (`app.py`), bem como na elaboração da estrutura base deste documento `README.md`.
+* **Revisão Humana:** Todo o conteúdo gerado (código e documentação) passou por revisão e foi ajustado manualmente após a geração para garantir alinhamento com as especificações exigidas.
+* **Histórico da Conversa:** [Confira aqui o histórico completo do aprendizado guiado com o Gemini](https://gemini.google.com/share/f8d6bcc1bec0)
